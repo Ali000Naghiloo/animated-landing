@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "font";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("./assets/fonts/NBInternational-Regular.otf") format("woff2");
+  }
+
+  @font-face {
+    font-family: "font-light";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("./assets/fonts/NBInternational-Light.otf") format("woff2");
+  }
+
+  @font-face {
+    font-family: "font-bold";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("./assets/fonts/NBInternational-Bold.otf") format("woff2");
+  }
+
+  .radial-text {
+    background: radial-gradient(circle at center, #94a8ed, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+}
+
+body {
+  cursor: url("./assets/cursor.svg"), auto;
+  cursor: url("./assets/cursor.svg"), pointer;
+  font-family: font-light;
+  font-size: 16px;
+  color: #ffffff;
+}
