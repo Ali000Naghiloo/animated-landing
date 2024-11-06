@@ -38,8 +38,8 @@
 
 body {
   cursor: url("./assets/cursor.svg"), auto;
-  cursor: url("./assets/cursor.svg"), pointer;
   font-family: font-light;
   font-size: 16px;
   color: #ffffff;
+  background: #000;
 }

@@ -48,15 +48,18 @@ export default function Header() {
         <div>
           <MyButton
             children={
-              <div className="flex">
-                <Slash /> Log In
+              <div className="w-full min-w-fit flex gap-2">
+                <div>
+                  <Slash />
+                </div>
+                <span>Log In</span>
               </div>
             }
             onClick={() => {
               console.log("logged");
             }}
-            variant="secondary"
-            className={"!text-white rounded-2xl bg-[rgba(148,168,237,0.4)]"}
+            variant=""
+            className={"rounded-2xl bg-[rgba(148,168,237,0.04)] border"}
           />
         </div>
       </motion.div>

@@ -7,8 +7,8 @@ import background from "../../../assets/landing/full-back.gif";
 export default function ChatSection() {
   return (
     <>
-      <div className="w-full h-screen bg-black relative flex flex-col px-[80px] py-[80px]">
-        <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center !z-0">
+      <div className="w-full h-screen bg-black relative flex flex-col p-[20px] md:p-[40px] xl:p-[80px] overflow-hidden">
+        <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center z-0">
           <img src={background} alt="" />
         </div>
 
