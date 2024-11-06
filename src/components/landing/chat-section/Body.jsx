@@ -17,7 +17,7 @@ export default function Body() {
     <>
       <motion.div
         ref={ref}
-        className="w-full h-full flex flex-col items-center justify-center z-10 relative"
+        className="w-full h-full flex flex-col gap-10 items-center justify-center z-10 relative"
       >
         {/* gif */}
         <motion.div

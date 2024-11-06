@@ -28,11 +28,22 @@
   }
 
   .radial-text {
-    background: radial-gradient(circle at center, #94a8ed, #ffffff);
+    background: var(
+      --Radial,
+      radial-gradient(29.68% 46.42% at 39.06% 38.97%, #2a5fdd 0%, #77a9e8 100%)
+    );
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
+  }
+
+  .buttons {
+    border-radius: 16px;
+    background: rgba(119, 169, 232, 0.04);
+    box-shadow: 6px 80px 80px 0px rgba(148, 168, 237, 0.02) inset,
+      0px -1px 1px 0px rgba(148, 168, 237, 0.2) inset,
+      0px 1px 1px 0px rgba(148, 168, 237, 0.2) inset;
+    backdrop-filter: blur(10px);
   }
 }
 

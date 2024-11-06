@@ -5,7 +5,7 @@ import ChatSection from "./chat-section/ChatSection";
 
 export default function Landing() {
   return (
-    <div className="h-screen w-full">
+    <div className="h-full w-full">
       {/* chat with AI */}
       <ChatSection />
 

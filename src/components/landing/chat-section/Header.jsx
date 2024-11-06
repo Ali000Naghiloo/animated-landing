@@ -32,10 +32,7 @@ export default function Header() {
 
         {/* links */}
         <div className="flex gap-4 mx-auto translate-x-[-30px]">
-          <div className="flex justify-center items-center border rounded-xl bg-[rgba(148,168,237,0.04)] px-[12px] py-[15px]">
-            <Slash />
-          </div>
-          <div className="flex gap-[30px] border rounded-xl bg-[rgba(148,168,237,0.04)] px-[30px] py-[15px]">
+          <div className="flex gap-[30px] rounded-xl px-[30px] py-[12px] buttons">
             {links.map((i) => (
               <div key={i} className="">
                 {i.title}
@@ -49,9 +46,6 @@ export default function Header() {
           <MyButton
             children={
               <div className="w-full min-w-fit flex gap-2">
-                <div>
-                  <Slash />
-                </div>
                 <span>Log In</span>
               </div>
             }
@@ -59,7 +53,7 @@ export default function Header() {
               console.log("logged");
             }}
             variant=""
-            className={"rounded-2xl bg-[rgba(148,168,237,0.04)] border"}
+            className={"rounded-2xl buttons px[30px] py-[12px]"}
           />
         </div>
       </motion.div>
