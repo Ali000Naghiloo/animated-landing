@@ -24,7 +24,7 @@ export default function Body() {
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="w-[300px] h-[300px] flex justify-center items-center pointer-events-none"
+          className="w-[340px] h-[300px] flex justify-center items-center pointer-events-none"
         >
           <img
             src={aiListeningGif}
