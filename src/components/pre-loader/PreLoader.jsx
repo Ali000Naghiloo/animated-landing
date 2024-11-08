@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import loader from "../../assets/loading/preloader.gif";
 import loaderBack from "../../assets/loading/black-back.gif";
@@ -16,11 +16,24 @@ const variants = {
 export default function PreLoader() {
   const showLoader = useSelector((state) => state.preLoader.show);
   const dispatch = useDispatch();
+  const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
       dispatch(setShowPreLoader(0));
     }, 3000);
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPercentage((prevCount) => prevCount + 1);
+    }, 30);
+
+    if (percentage === 100) {
+      clearInterval(intervalId);
+    }
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -53,12 +66,12 @@ export default function PreLoader() {
         </div>
 
         {/* footer */}
-        <div className="w-full flex justify-between text-[#94A8ED] text-[2em] p-[80px]">
+        <div className="w-full flex justify-between text-[#94A8ED] text-[2em] p-[80px] z-10">
           <div className="flex">
             AI Loading <span className="animate-pulse">..</span>
           </div>
 
-          <span>50%</span>
+          <span>{percentage}%</span>
         </div>
       </motion.div>
     </>

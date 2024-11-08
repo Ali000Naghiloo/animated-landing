@@ -54,3 +54,7 @@ body {
   color: #ffffff;
   background: #000;
 }
+
+button {
+  cursor: url("./assets/cursor.svg"), auto !important;
+}

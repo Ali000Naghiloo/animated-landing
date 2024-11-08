@@ -1,8 +1,21 @@
-import React from "react";
 import MyButton from "../../reusables/MyButton";
 import logo from "../../../assets/life-copilot-logo.png";
+import { motion } from "framer-motion";
 
-export default function Footer() {
+const downVariants = {
+  animate: { y: 15 },
+  initial: { y: -30 },
+  transition: {
+    delay: 1,
+    ease: "circIn",
+    repeat: Infinity,
+    duration: 0.5,
+    repeatType: "reverse",
+    repeatDelay: 2,
+  },
+};
+
+export default function Footer({ mode, setMode }) {
   const Down = () => (
     <svg
       width="12"
@@ -33,27 +46,29 @@ export default function Footer() {
   );
 
   return (
-    <div className="w-full flex justify-between z-10">
-      <MyButton
-        variant=""
-        className={"buttons px-[11px] py-[16px]"}
-        children={
-          <>
-            <Down />
-          </>
-        }
-      />
+    <div className="fixed bottom-0 left-0 w-full h-fit flex justify-between p-[80px] z-0">
+      <motion.div
+        variants={downVariants}
+        initial={"initial"}
+        animate={"animate"}
+        transition={{
+          delay: 1,
+          ease: "circIn",
+          repeat: Infinity,
+          duration: 0.5,
+          repeatType: "reverse",
+          repeatDelay: 2,
+        }}
+      >
+        <MyButton
+          variant=""
+          className={"buttons px-[11px] py-[16px]"}
+          children={<Down />}
+        />
+      </motion.div>
 
-      <MyButton
-        children={<>Press to start </>}
-        className={
-          "buttons hover:bg-[#77A9E8] hover:shadow-[10px_10px_50px_#77A9E8] px-[43px] py-[20px] text-[1.2em] backdrop-blur-[10px]"
-        }
-        variant=""
-      />
-
-      <div className="w-[72px] h-[48px]">
-        <img src={logo} className="w-full h-full object-cover" alt="" />
+      <div className="max-w-[75px]">
+        <img src={logo} className="w-full object-cover" alt="" />
       </div>
     </div>
   );

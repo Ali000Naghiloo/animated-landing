@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setShowPreLoader } from "../../store/reducers/preLoaderSlice";
 import ChatSection from "./chat-section/ChatSection";
+import FillingText from "./filling text-section/FillingText";
 
 export default function Landing() {
   return (
@@ -10,6 +11,7 @@ export default function Landing() {
       <ChatSection />
 
       {/* filling text */}
+      <FillingText />
 
       {/* features */}
 
