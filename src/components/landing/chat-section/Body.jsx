@@ -12,33 +12,37 @@ const buttonVariant = {
 };
 
 export default function Body() {
-  // const aiListeningGif = lazy(() =>
-  //   import()
-  // );
   const [details, setDetails] = useState({
     aiMode: "listening",
     title: "Experience the Vyvo AI",
   });
+  const [mode, setMode] = useState("AI Listening..");
   const ref = useRef(null);
   const isInView = useInView(ref);
 
   const allMods = ["listening", "waiting", "thinking", "speaking"];
 
-  const buttons = [
-    // listening
-    {
-      key: "listening",
-      element: (
+  const handleAiButton = () => {
+    if (details.aiMode == "listening") {
+      return (
         <motion.div
           key="listening"
-          variants={buttonVariant}
+          variants={{
+            animate: { opacity: 0, z: -100 },
+            initial: {
+              opacity: 1,
+              z: 0,
+              exit: { opacity: 0, z: -100 },
+              transition: { duration: 1, ease: "easeOut" },
+            },
+          }}
           initial={"animate"}
           animate={"initial"}
-          transition={{ duration: 0.8 }}
+          transition={"transition"}
           exit={"exit"}
         >
           <MyButton
-            children={<>Press to start</>}
+            children={<span>Press to start</span>}
             className={
               "buttons hover:bg-[#77A9E8] text-[1.3em] hover:shadow-[0_0_50px_#77A9E8] px-[43px] py-[20px] backdrop-blur-[10px]"
             }
@@ -48,12 +52,10 @@ export default function Body() {
             }}
           />
         </motion.div>
-      ),
-    },
-    // waiting
-    {
-      key: "waiting",
-      element: (
+      );
+    }
+    if (details.aiMode == "waiting") {
+      return (
         <motion.div
           initial={{ opacity: 0, z: -100 }}
           animate={{ opacity: 1, z: 0 }}
@@ -70,12 +72,10 @@ export default function Body() {
             }}
           />
         </motion.div>
-      ),
-    },
-    // thinking
-    {
-      key: "thinking",
-      element: (
+      );
+    }
+    if (details.aiMode == "thinking") {
+      return (
         <motion.div
           initial={{ opacity: 0, z: -100 }}
           animate={{ opacity: 1, z: 0 }}
@@ -92,12 +92,10 @@ export default function Body() {
             }}
           />
         </motion.div>
-      ),
-    },
-    // speaking
-    {
-      key: "speaking",
-      element: (
+      );
+    }
+    if (details.aiMode == "speaking") {
+      return (
         <motion.div
           key={"speaking"}
           initial={{ opacity: 0, z: -100 }}
@@ -111,63 +109,50 @@ export default function Body() {
             }
             variant=""
             onClick={() => {
-              setDetails({ ...details, aiMode: "waiting" });
+              setDetails({ ...details, aiMode: "listening" });
             }}
           />
         </motion.div>
-      ),
-    },
-  ];
+      );
+    }
+  };
 
   const handleAiMode = () => {
-    let text = "";
-
-    if (details.aiMode == "listening") {
-      text = "AI Listening..";
-    }
-    if (details.aiMode == "waiting") {
-      text = "Ai is waiting for a question..";
-    }
-    if (details.aiMode == "thinking") {
-      text = "AI Thinking..";
-    }
-    if (details.aiMode == "speaking") {
-      text = "Ai Speaking...";
-    }
-
     return (
-      <AnimatePresence>
-        <motion.div className="text-[#77A9E8]">
-          {text &&
-            text.split("").map((char, index) => (
-              <motion.span
-                variants={{
-                  hidden: {
-                    scale: 0.8,
-                    y: 0,
-                    opacity: 0,
-                  },
-                  visible: {
-                    y: 0,
-                    opacity: 1,
-                    scale: 1,
-                  },
-                  exit: {
-                    opacity: 0,
-                    scale: 0.2,
-                  },
-                }}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ delay: index * 0.05, duration: 1 }}
-                key={index}
-              >
-                {char}
-              </motion.span>
-            ))}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div className="text-[#77A9E8] w-full text-center">
+        {details.aiMode &&
+          mode.split("").map((char, index) => (
+            <motion.span
+              variants={{
+                hidden: {
+                  scale: 0.8,
+                  y: 0,
+                  opacity: 0,
+                },
+                visible: {
+                  y: 0,
+                  opacity: 1,
+                  scale: 1,
+                },
+                exit: {
+                  opacity: 0,
+                  scale: 0.2,
+                },
+              }}
+              initial="hidden"
+              animate="visible"
+              exit={{
+                speed: index * 0.05,
+                opacity: 0,
+                scale: 0.2,
+              }}
+              transition={{ delay: index * 0.05, duration: 1 }}
+              key={index}
+            >
+              {char}
+            </motion.span>
+          ))}
+      </motion.div>
     );
   };
 
@@ -181,6 +166,24 @@ export default function Body() {
       return aiSpeakingGif;
     }
   };
+
+  useEffect(() => {
+    setMode("");
+    setTimeout(() => {
+      if (details.aiMode === "listening") {
+        setMode("AI Listening..");
+      }
+      if (details.aiMode === "waiting") {
+        setMode("Ai is waiting for a question..");
+      }
+      if (details.aiMode === "thinking") {
+        setMode("AI Thinking..");
+      }
+      if (details.aiMode === "speaking") {
+        setMode("AI Speaking...");
+      }
+    }, 100);
+  }, [details.aiMode]);
 
   return (
     <>
@@ -207,7 +210,9 @@ export default function Body() {
         {/* texts */}
         <div className="w-full flex flex-col items-center justify-between gap-12 ">
           {/* ai mode */}
-          {details.aiMode && handleAiMode()}
+          <AnimatePresence initial={false}>
+            {mode && handleAiMode()}
+          </AnimatePresence>
 
           <div className="flex flex-col items-center w-full gap-5 mb-auto">
             {/* title */}
@@ -228,7 +233,7 @@ export default function Body() {
             </AnimatePresence>
 
             {/* descriptions */}
-            <div className="font-light text-[rgba(255,255,255,0.6)] max-w-[30%] mx-auto text-center">
+            <div className="font-light text-[1em] text-[rgba(255,255,255,0.6)] max-w-[30%] mx-auto mt-auto text-center">
               {details.aiMode == "listening" && (
                 <motion.span
                   initial={{ opacity: 0, y: 10 }}
@@ -244,19 +249,17 @@ export default function Body() {
 
           {/* button */}
           <AnimatePresence>
-            <div className="w-full flex justify-center z-10">
-              {buttons.map((b, index) =>
-                b.key == details.aiMode ? b.element : null
-              )}
-            </div>
+            <motion.div className="w-full flex justify-center z-10 text-[1.5em]">
+              {details.aiMode && handleAiButton()}
+            </motion.div>
           </AnimatePresence>
         </div>
-      </motion.div>
 
-      <Footer
-        setMode={(e) => setDetails({ ...details, aiMode: allMods[e] })}
-        mode={details.aiMode}
-      />
+        <Footer
+          setMode={(e) => setDetails({ ...details, aiMode: allMods[e] })}
+          mode={details.aiMode}
+        />
+      </motion.div>
     </>
   );
 }
