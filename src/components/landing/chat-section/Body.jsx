@@ -5,6 +5,7 @@ import aiSpeakingGif from "../../../assets/landing/speaking.gif";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import Footer from "./Footer";
 import MyButton from "../../reusables/MyButton";
+import MyInput from "../../reusables/MyInput";
 
 const buttonVariant = {
   animate: { opacity: 0, z: -100 },
@@ -48,7 +49,7 @@ export default function Body() {
             }
             variant=""
             onClick={() => {
-              setDetails({ ...details, aiMode: "waiting" });
+              setDetails({ ...details, aiMode: "waiting", title: "" });
             }}
           />
         </motion.div>
@@ -75,6 +76,9 @@ export default function Body() {
       );
     }
     if (details.aiMode == "thinking") {
+      setTimeout(() => {
+        setDetails({ ...details, aiMode: "speaking" });
+      }, 3000);
       return (
         <motion.div
           initial={{ opacity: 0, z: -100 }}
@@ -87,9 +91,6 @@ export default function Body() {
               "buttons hover:bg-[#77A9E8] text-[1.3em] hover:shadow-[0_0_50px_#77A9E8] px-[43px] py-[20px] backdrop-blur-[10px]"
             }
             variant=""
-            onClick={() => {
-              setDetails({ ...details, aiMode: "speaking" });
-            }}
           />
         </motion.div>
       );
@@ -120,38 +121,33 @@ export default function Body() {
   const handleAiMode = () => {
     return (
       <motion.div className="text-[#77A9E8] w-full text-center">
-        {details.aiMode &&
-          mode.split("").map((char, index) => (
-            <motion.span
-              variants={{
-                hidden: {
-                  scale: 0.8,
-                  y: 0,
-                  opacity: 0,
-                },
-                visible: {
-                  y: 0,
-                  opacity: 1,
-                  scale: 1,
-                },
-                exit: {
-                  opacity: 0,
-                  scale: 0.2,
-                },
-              }}
-              initial="hidden"
-              animate="visible"
-              exit={{
-                speed: index * 0.05,
+        {mode.split("").map((char, index) => (
+          <motion.span
+            variants={{
+              hidden: {
+                scale: 0.8,
+                y: 0,
                 opacity: 0,
-                scale: 0.2,
-              }}
-              transition={{ delay: index * 0.05, duration: 1 }}
-              key={index}
-            >
-              {char}
-            </motion.span>
-          ))}
+              },
+              visible: {
+                y: 0,
+                opacity: 1,
+                scale: 1,
+              },
+            }}
+            initial="hidden"
+            animate="visible"
+            exit={{
+              speed: index * 0.05,
+              opacity: 0,
+              scale: 0.2,
+            }}
+            transition={{ delay: index * 0.05, duration: 1 }}
+            key={index}
+          >
+            {char}
+          </motion.span>
+        ))}
       </motion.div>
     );
   };
@@ -167,8 +163,41 @@ export default function Body() {
     }
   };
 
+  const handleRenderTitle = () => {
+    if (details.aiMode === "listening" || "thinking" || "speaking") {
+      return details.title.split(" ").map((t, index) => (
+        <motion.span
+          className="text-left radial-text text-5xl"
+          key={t}
+          initial={{ z: 40, y: 40, opacity: 0 }}
+          animate={{ z: 0, y: 0, opacity: 1 }}
+          transition={{ delay: index * 0.1 }}
+          exit={{ z: 40, y: 40, opacity: 0 }}
+        >
+          {t}
+        </motion.span>
+      ));
+    }
+    if (details.aiMode == "waiting") {
+      return (
+        <motion.div
+          initial={{ opacity: 0, z: -100 }}
+          animate={{ opacity: 1, z: 0 }}
+          exit={{ opacity: 0, z: -100 }}
+        >
+          <MyInput
+            value={details.title}
+            onChange={(e) => setDetails({ ...details, title: e.target.value })}
+            placeholder={"Ask something..."}
+            className={"bg-[#000] buttons w-[500px] rounded-[16px]"}
+          />
+        </motion.div>
+      );
+    }
+  };
+
   useEffect(() => {
-    setMode("");
+    setMode(null);
     setTimeout(() => {
       if (details.aiMode === "listening") {
         setMode("AI Listening..");
@@ -182,7 +211,7 @@ export default function Body() {
       if (details.aiMode === "speaking") {
         setMode("AI Speaking...");
       }
-    }, 100);
+    }, 1000);
   }, [details.aiMode]);
 
   return (
@@ -208,28 +237,16 @@ export default function Body() {
         </motion.div>
 
         {/* texts */}
-        <div className="w-full flex flex-col items-center justify-between gap-12 ">
+        <div className="w-full flex flex-col items-center justify-center gap-8">
           {/* ai mode */}
-          <AnimatePresence initial={false}>
-            {mode && handleAiMode()}
-          </AnimatePresence>
+          <AnimatePresence>{mode && handleAiMode()}</AnimatePresence>
 
-          <div className="flex flex-col items-center w-full gap-5 mb-auto">
+          <div className="flex flex-col items-center w-full gap-5">
             {/* title */}
             <AnimatePresence>
-              <div className="flex gap-2">
-                {details.title.split(" ").map((t, index) => (
-                  <motion.span
-                    className="text-left radial-text text-5xl"
-                    key={t}
-                    initial={{ z: 40, y: 40, opacity: 0 }}
-                    animate={{ z: 0, y: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    {t}
-                  </motion.span>
-                ))}
-              </div>
+              <motion.div className="flex gap-2">
+                {handleRenderTitle()}
+              </motion.div>
             </AnimatePresence>
 
             {/* descriptions */}
@@ -249,7 +266,7 @@ export default function Body() {
 
           {/* button */}
           <AnimatePresence>
-            <motion.div className="w-full flex justify-center z-10 text-[1.5em]">
+            <motion.div className="w-full flex justify-center z-10 text-xl">
               {details.aiMode && handleAiButton()}
             </motion.div>
           </AnimatePresence>
