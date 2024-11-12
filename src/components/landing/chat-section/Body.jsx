@@ -15,9 +15,11 @@ const buttonVariant = {
 export default function Body() {
   const [details, setDetails] = useState({
     aiMode: "listening",
+  });
+  const [data, setData] = useState({
+    aiMode: "AI Listening..",
     title: "Experience the Vyvo AI",
   });
-  const [mode, setMode] = useState("AI Listening..");
   const ref = useRef(null);
   const isInView = useInView(ref);
 
@@ -121,7 +123,7 @@ export default function Body() {
   const handleAiMode = () => {
     return (
       <motion.div className="text-[#77A9E8] w-full text-center">
-        {mode.split("").map((char, index) => (
+        {data.aiMode.split("").map((char, index) => (
           <motion.span
             variants={{
               hidden: {
@@ -164,52 +166,34 @@ export default function Body() {
   };
 
   const handleRenderTitle = () => {
-    if (details.aiMode === "listening" || "thinking" || "speaking") {
-      return details.title.split(" ").map((t, index) => (
-        <motion.span
-          className="text-left radial-text text-5xl"
-          key={t}
-          initial={{ z: 40, y: 40, opacity: 0 }}
-          animate={{ z: 0, y: 0, opacity: 1 }}
-          transition={{ delay: index * 0.1 }}
-          exit={{ z: 40, y: 40, opacity: 0 }}
-        >
-          {t}
-        </motion.span>
-      ));
-    }
-    if (details.aiMode == "waiting") {
-      return (
-        <motion.div
-          initial={{ opacity: 0, z: -100 }}
-          animate={{ opacity: 1, z: 0 }}
-          exit={{ opacity: 0, z: -100 }}
-        >
-          <MyInput
-            value={details.title}
-            onChange={(e) => setDetails({ ...details, title: e.target.value })}
-            placeholder={"Ask something..."}
-            className={"bg-[#000] buttons w-[500px] rounded-[16px]"}
-          />
-        </motion.div>
-      );
-    }
+    return data.title.split(" ").map((t, index) => (
+      <motion.span
+        className="text-left radial-text text-5xl"
+        key={t}
+        initial={{ z: 40, y: 15, opacity: 0 }}
+        animate={{ z: 0, y: 0, opacity: 1 }}
+        transition={{ delay: index * 0.1, duration: 2 }}
+        exit={{ z: 40, y: 15, opacity: 0 }}
+      >
+        {t}
+      </motion.span>
+    ));
   };
 
   useEffect(() => {
-    setMode(null);
+    setData({ ...data, aiMode: "" });
     setTimeout(() => {
       if (details.aiMode === "listening") {
-        setMode("AI Listening..");
+        setData({ aiMode: "AI Listening..", title: "Experience the Vyvo AI" });
       }
       if (details.aiMode === "waiting") {
-        setMode("Ai is waiting for a question..");
+        setData({ aiMode: "Ai is waiting for a question..", title: "" });
       }
       if (details.aiMode === "thinking") {
-        setMode("AI Thinking..");
+        setData({ ...data, aiMode: "AI Thinking.." });
       }
       if (details.aiMode === "speaking") {
-        setMode("AI Speaking...");
+        setData({ ...data, aiMode: "AI Speaking..." });
       }
     }, 1000);
   }, [details.aiMode]);
@@ -239,7 +223,7 @@ export default function Body() {
         {/* texts */}
         <div className="w-full flex flex-col items-center justify-center gap-8">
           {/* ai mode */}
-          <AnimatePresence>{mode && handleAiMode()}</AnimatePresence>
+          <AnimatePresence>{data.aiMode && handleAiMode()}</AnimatePresence>
 
           <div className="flex flex-col items-center w-full gap-5">
             {/* title */}
@@ -273,7 +257,7 @@ export default function Body() {
         </div>
 
         <Footer
-          setMode={(e) => setDetails({ ...details, aiMode: allMods[e] })}
+          setData={(e) => setDetails({ ...details, aiMode: allMods[e] })}
           mode={details.aiMode}
         />
       </motion.div>
