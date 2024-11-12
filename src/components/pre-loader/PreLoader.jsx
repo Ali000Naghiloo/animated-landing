@@ -24,6 +24,7 @@ export default function PreLoader() {
     }, 3000);
   }, []);
 
+  // set percetage
   useEffect(() => {
     const intervalId = setInterval(() => {
       setPercentage((prevCount) => prevCount + 1);
@@ -66,7 +67,7 @@ export default function PreLoader() {
         </div>
 
         {/* footer */}
-        <div className="w-full flex justify-between text-[#94A8ED] text-[2em] p-[80px] z-10">
+        <div className="w-full fixed left-0 bottom-0 flex justify-between text-[#94A8ED] text-[2em] p-[80px] z-10">
           <div className="flex">
             AI Loading <span className="animate-pulse">..</span>
           </div>

@@ -46,7 +46,7 @@ export default function Footer({ mode, setMode }) {
   );
 
   return (
-    <div className="absolute bottom-0 left-0 w-full h-fit flex justify-between p-[80px] z-[-1]">
+    <div className="absolute bottom-0 left-0 w-full h-fit flex justify-between z-[-1]">
       <motion.div
         variants={downVariants}
         initial={"initial"}
