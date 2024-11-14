@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import aiListeningGif from "../../../assets/landing/listening.gif";
-import aiWaitingGif from "../../../assets/landing/waiting.gif";
-import aiSpeakingGif from "../../../assets/landing/speaking.gif";
+import aiListeningGif from "../../../assets/landing/listening.mp4";
+import aiWaitingGif from "../../../assets/landing/waiting.mp4";
+import aiThinkingGif from "../../../assets/landing/thinking.mp4";
+import aiSpeakingGif from "../../../assets/landing/speaking.mp4";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import Footer from "./Footer";
 import MyButton from "../../reusables/MyButton";
@@ -64,17 +65,17 @@ const voiceLines = [
 
 export default function Body() {
   const [details, setDetails] = useState({
-    aiMode: "listening",
+    aiMode: "waiting",
   });
   const [data, setData] = useState({
-    aiMode: "AI Listening..",
+    aiMode: "AI is waiting..",
     title: "Experience the Vyvo AI",
     button: "Press to start",
   });
   const ref = useRef(null);
   const isInView = useInView(ref);
 
-  const allMods = ["listening", "waiting", "thinking", "speaking"];
+  const allMods = ["waiting", "listening", "thinking", "speaking"];
 
   const handleAiButton = () => {
     if (details.aiMode == "thinking") {
@@ -83,7 +84,7 @@ export default function Body() {
         setData({
           ...data,
           title: "Sleep Well!!!",
-          button: "speaking",
+          button: "Ask Again",
           aiMode: "Ai Speaking...",
         });
       }, 3000);
@@ -114,21 +115,21 @@ export default function Body() {
             setDetails({ aiMode: false });
             setTimeout(() => {
               switch (details.aiMode) {
-                case "listening":
-                  setDetails({ aiMode: "waiting" });
+                case "waiting":
+                  setDetails({ aiMode: "listening" });
                   setData({
                     ...data,
                     title: "",
                     button: "Submit",
-                    aiMode: "Ai is waiting for a question...",
+                    aiMode: "Ai is listening...",
                   });
                   break;
-                case "waiting":
+                case "listening":
                   setDetails({ aiMode: "thinking" });
                   setData({
                     ...data,
                     button: "/ / /",
-                    aiMode: "Ai Thinking...",
+                    aiMode: "Ai is Thinking...",
                   });
                   break;
                 // case "thinking":
@@ -139,12 +140,12 @@ export default function Body() {
                 //     aiMode: "Ai Speaking...",
                 //   });
                 case "speaking":
-                  setDetails({ aiMode: "listening" });
+                  setDetails({ aiMode: "waiting" });
                   setData({
                     ...data,
                     title: "Experience the Vyvo AI",
                     button: "Press to start",
-                    aiMode: "Ai is listening...",
+                    aiMode: "Ai is waiting for a question...",
                   });
                   break;
                 default:
@@ -192,20 +193,69 @@ export default function Body() {
   };
 
   const handleAiGif = () => {
-    if (details.aiMode == "listening") {
-      return aiListeningGif;
-    }
+    let props = [];
+
     if (details.aiMode == "waiting") {
-      return aiWaitingGif;
+      return (
+        <motion.video
+          autoPlay
+          loop
+          muted
+          playsInline
+          alt=""
+          className="w-[550px] h-[550px] object-cover"
+        >
+          <source src={aiWaitingGif} />
+        </motion.video>
+      );
+    }
+    if (details.aiMode == "listening") {
+      return (
+        <motion.video
+          autoPlay
+          loop
+          muted
+          playsInline
+          alt=""
+          className="w-[550px] h-[550px] object-cover"
+        >
+          <source src={aiListeningGif} />
+        </motion.video>
+      );
+    }
+    if (details.aiMode == "thinking") {
+      return (
+        <motion.video
+          autoPlay
+          loop
+          muted
+          playsInline
+          alt=""
+          className="w-[550px] h-[550px] object-cover"
+        >
+          <source src={aiThinkingGif} />
+        </motion.video>
+      );
     } else {
-      return aiSpeakingGif;
+      return (
+        <motion.video
+          autoPlay
+          loop
+          muted
+          playsInline
+          alt=""
+          className="w-[550px] h-[550px] object-cover"
+        >
+          <source src={aiSpeakingGif} />
+        </motion.video>
+      );
     }
   };
 
   const handleRenderTitle = () => {
     return (
       <>
-        {details.aiMode == "waiting" && (
+        {details.aiMode == "listening" && (
           <motion.div
             initial={{ y: 40, z: 20, opacity: 0 }}
             animate={{ opacity: 1, y: 0, z: 0 }}
@@ -263,7 +313,7 @@ export default function Body() {
             </motion.div>
           </motion.div>
         )}
-        {(details.aiMode == "thinking" || details.aiMode == "listening") &&
+        {(details.aiMode == "thinking" || details.aiMode == "waiting") &&
           data.title.split(" ").map((t, index) => (
             <motion.span
               className="text-left radial-text text-5xl"
@@ -293,13 +343,9 @@ export default function Body() {
           animate={{ scale: 1 }}
           transition={{ duration: 0.4 }}
           exit={{ z: -20, opacity: 0 }}
-          className="w-[380px] h-[300px] flex justify-center items-center pointer-events-none my-auto z-0"
+          className="w-[380px] h-[300px] flex justify-center items-center pointer-events-none my-auto z-0 overflow-hidden"
         >
-          <motion.img
-            src={handleAiGif()}
-            alt=""
-            className="w-[550px] h-[550px] object-cover"
-          />
+          {handleAiGif()}
         </motion.div>
 
         {/* texts */}
@@ -314,7 +360,7 @@ export default function Body() {
             </motion.div>
 
             {/* descriptions */}
-            {details.aiMode == "listening" && (
+            {details.aiMode == allMods[0] && (
               <motion.div
                 className="font-light text-[1em] text-[rgba(255,255,255,0.6)] max-w-[30%] mx-auto mt-auto text-center"
                 initial={{ opacity: 0, y: 10 }}
